@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المدن المغربية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1976d2, #2196f3);
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            z-index: 10;
+        }
+
+        .close-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .close-button:active {
+            transform: scale(0.95);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="stars" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23stars)"/></svg>');
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 15px;
+            background: white;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .search-container {
+            padding: 25px;
+            background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 16px;
+            background: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #1e3c72;
+            box-shadow: 0 6px 20px rgba(30, 60, 114, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 20px;
+        }
+
+        .cities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .cities-grid::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .cities-grid::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .cities-grid::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            border-radius: 10px;
+        }
+
+        .city-button {
+            background: linear-gradient(135deg, white, #f8f9fa);
+            border: none;
+            border-radius: 15px;
+            padding: 20px 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .city-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .city-button:hover::before {
+            left: 100%;
+        }
+
+        .city-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(30, 60, 114, 0.2);
+            background: linear-gradient(135deg, #2196f3, #1976d2);
+            color: white;
+        }
+
+        .city-button:active {
+            transform: translateY(-2px);
+        }
+
+        .no-results {
+            text-align: center;
+            color: #666;
+            font-size: 16px;
+            padding: 40px 20px;
+            display: none;
+        }
+
+        .no-results.show {
+            display: block;
+        }
+
+        @media (max-width: 480px) {
+            .cities-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .search-input {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <button class="close-button" onclick="closeApp()" title="إغلاق التطبيق">✕</button>
+            <div class="logo">
+                <img src="data/icon.png" alt="أيقونة التطبيق" onerror="this.style.display='none'">
+            </div>
+            <h1>البحث عن اطباء حسب المدينة</h1>
+        </div>
+        
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="ابحث عن مدينة..." id="searchInput">
+                <span class="search-icon">🔍</span>
+            </div>
+            
+            <div class="cities-grid" id="citiesGrid">
+                <a href="data/casablanca.html" class="city-button" data-city="الدار البيضاء">الدار البيضاء</a>
+                <a href="data/rabat.html" class="city-button" data-city="الرباط">الرباط</a>
+                <a href="data/fes.html" class="city-button" data-city="فاس">فاس</a>
+                <a href="data/marrakech.html" class="city-button" data-city="مراكش">مراكش</a>
+                <a href="https://asayss.github.io/agadir-doct/" class="city-button" data-city="أكادير">أكادير</a>
+                <a href="data/tangier.html" class="city-button" data-city="طنجة">طنجة</a>
+                <a href="data/meknes.html" class="city-button" data-city="مكناس">مكناس</a>
+                <a href="data/oujda.html" class="city-button" data-city="وجدة">وجدة</a>
+                <a href="data/kenitra.html" class="city-button" data-city="القنيطرة">القنيطرة</a>
+                <a href="data/tetouan.html" class="city-button" data-city="تطوان">تطوان</a>
+                <a href="data/safi.html" class="city-button" data-city="آسفي">آسفي</a>
+                <a href="data/mohammedia.html" class="city-button" data-city="المحمدية">المحمدية</a>
+                <a href="data/khouribga.html" class="city-button" data-city="خريبكة">خريبكة</a>
+                <a href="data/beni-mellal.html" class="city-button" data-city="بني ملال">بني ملال</a>
+                <a href="data/el-jadida.html" class="city-button" data-city="الجديدة">الجديدة</a>
+                <a href="data/taza.html" class="city-button" data-city="تازة">تازة</a>
+                <a href="data/nador.html" class="city-button" data-city="الناظور">الناظور</a>
+                <a href="data/settat.html" class="city-button" data-city="سطات">سطات</a>
+                <a href="data/larache.html" class="city-button" data-city="العرائش">العرائش</a>
+                <a href="data/khenifra.html" class="city-button" data-city="خنيفرة">خنيفرة</a>
+                <a href="data/ouarzazate.html" class="city-button" data-city="ورزازات">ورزازات</a>
+                <a href="data/berrechid.html" class="city-button" data-city="برشيد">برشيد</a>
+                <a href="data/khemisset.html" class="city-button" data-city="الخميسات">الخميسات</a>
+                <a href="data/inezgane.html" class="city-button" data-city="إنزكان">إنزكان</a>
+                <a href="data/taroudant.html" class="city-button" data-city="تارودانت">تارودانت</a>
+                <a href="data/zagora.html" class="city-button" data-city="زاكورة">زاكورة</a>
+            </div>
+            
+            <div class="no-results" id="noResults">
+                <p>لم يتم العثور على أي مدينة تطابق البحث</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const citiesGrid = document.getElementById('citiesGrid');
+        const noResults = document.getElementById('noResults');
+        const cityButtons = citiesGrid.querySelectorAll('.city-button');
+
+        function filterCities() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            let visibleCount = 0;
+
+            cityButtons.forEach(button => {
+                const cityName = button.getAttribute('data-city').toLowerCase();
+                const isMatch = cityName.includes(searchTerm);
+                
+                if (isMatch) {
+                    button.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    button.style.display = 'none';
+                }
+            });
+
+            if (visibleCount === 0 && searchTerm !== '') {
+                noResults.classList.add('show');
+                citiesGrid.style.display = 'none';
+            } else {
+                noResults.classList.remove('show');
+                citiesGrid.style.display = 'grid';
+            }
+        }
+
+        searchInput.addEventListener('input', filterCities);
+        searchInput.addEventListener('keyup', filterCities);
+
+        // تأثيرات إضافية للأزرار
+        cityButtons.forEach(button => {
+            button.addEventListener('touchstart', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
+            
+            button.addEventListener('touchend', function() {
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 100);
+            });
+        });
+
+        // تحسين الأداء للهاتف
+        let searchTimeout;
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(filterCities, 150);
+        });
+
+        // وظيفة إغلاق التطبيق
+        function closeApp() {
+            if (confirm('هل تريد إغلاق التطبيق؟')) {
+                // للمتصفح العادي
+                if (window.opener) {
+                    window.close();
+                } else {
+                    // للتطبيقات المدمجة أو الهاتف
+                    if (navigator.app && navigator.app.exitApp) {
+                        navigator.app.exitApp();
+                    } else if (window.cordova && navigator.app && navigator.app.exitApp) {
+                        navigator.app.exitApp();
+                    } else {
+                        // رجوع للصفحة السابقة أو الرئيسية
+                        if (history.length > 1) {
+                            history.back();
+                        } else {
+                            window.location.href = 'about:blank';
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
