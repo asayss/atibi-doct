@@ -33,12 +33,12 @@
             padding: 30px 20px;
             text-align: center;
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        .close-button {
-            position: absolute;
-            top: 15px;
-            right: 15px;
+        .home-button {
             width: 35px;
             height: 35px;
             background: rgba(255, 255, 255, 0.2);
@@ -52,17 +52,17 @@
             justify-content: center;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
-            z-index: 10;
+            text-decoration: none;
         }
 
-        .close-button:hover {
+        .home-button:hover {
             background: rgba(255, 255, 255, 0.3);
             border-color: rgba(255, 255, 255, 0.5);
             transform: scale(1.1);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
-        .close-button:active {
+        .home-button:active {
             transform: scale(0.95);
         }
 
@@ -79,7 +79,6 @@
         .logo {
             width: 60px;
             height: 60px;
-            margin: 0 auto 15px;
             background: white;
             border-radius: 15px;
             display: flex;
@@ -88,6 +87,14 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             position: relative;
             z-index: 1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
         }
 
         .logo img {
@@ -96,13 +103,21 @@
             object-fit: contain;
         }
 
+        .header-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1;
+            position: relative;
+        }
+
         .header h1 {
             color: white;
             font-size: 24px;
             font-weight: bold;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            position: relative;
-            z-index: 1;
+            margin-top: 15px;
         }
 
         .search-container {
@@ -237,11 +252,15 @@
 <body>
     <div class="container">
         <div class="header">
-            <button class="close-button" onclick="closeApp()" title="إغلاق التطبيق">✕</button>
-            <div class="logo">
+            <a href="https://asayss.github.io/atibi-doct/" class="logo" title="الصفحة الرئيسية">
                 <img src="data/icon.png" alt="أيقونة التطبيق" onerror="this.style.display='none'">
+            </a>
+            
+            <div class="header-content">
+                <h1>البحث عن اطباء حسب المدينة</h1>
             </div>
-            <h1>البحث عن اطباء حسب المدينة</h1>
+            
+            <a href="https://asayss.github.io/atibi-doct/" class="home-button" title="الصفحة الرئيسية">🏠</a>
         </div>
         
         <div class="search-container">
@@ -319,30 +338,6 @@
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(filterCities, 150);
         });
-
-        // وظيفة إغلاق التطبيق
-        function closeApp() {
-            if (confirm('هل تريد إغلاق التطبيق؟')) {
-                // للمتصفح العادي
-                if (window.opener) {
-                    window.close();
-                } else {
-                    // للتطبيقات المدمجة أو الهاتف
-                    if (navigator.app && navigator.app.exitApp) {
-                        navigator.app.exitApp();
-                    } else if (window.cordova && navigator.app && navigator.app.exitApp) {
-                        navigator.app.exitApp();
-                    } else {
-                        // رجوع للصفحة السابقة أو الرئيسية
-                        if (history.length > 1) {
-                            history.back();
-                        } else {
-                            window.location.href = 'about:blank';
-                        }
-                    }
-                }
-            }
-        }
     </script>
 </body>
 </html>
