@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طلب تسجيل طبيب</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1976d2, #2196f3);
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .home-button {
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            text-decoration: none;
+        }
+
+        .home-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .home-button:active {
+            transform: scale(0.95);
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        .header-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1;
+            position: relative;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            margin-top: 10px;
+        }
+
+        .form-container {
+            padding: 30px;
+            background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            font-size: 16px;
+            background: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #1976d2;
+            box-shadow: 0 6px 20px rgba(25, 118, 210, 0.2);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .file-input-container {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-label {
+            display: block;
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px dashed #1976d2;
+            border-radius: 15px;
+            background: rgba(25, 118, 210, 0.05);
+            color: #1976d2;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .file-input-label:hover {
+            background: rgba(25, 118, 210, 0.1);
+            border-color: #1565c0;
+        }
+
+        .file-name {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+        }
+
+        .submit-button {
+            width: 100%;
+            background: linear-gradient(135deg, #1976d2, #2196f3);
+            border: none;
+            border-radius: 25px;
+            padding: 18px 30px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(25, 118, 210, 0.3);
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(25, 118, 210, 0.4);
+        }
+
+        .submit-button:hover::before {
+            left: 100%;
+        }
+
+        .submit-button:active {
+            transform: translateY(0);
+        }
+
+        .submit-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .required {
+            color: #f44336;
+        }
+
+        .form-note {
+            background: rgba(25, 118, 210, 0.1);
+            border: 1px solid rgba(25, 118, 210, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 25px;
+            color: #1565c0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+            
+            .form-input {
+                font-size: 14px;
+                padding: 12px 15px;
+            }
+            
+            .submit-button {
+                font-size: 16px;
+                padding: 15px 25px;
+            }
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #1976d2;
+            margin-top: 10px;
+        }
+
+        .success-message {
+            display: none;
+            background: #4caf50;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .error-message {
+            display: none;
+            background: #f44336;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="https://asayss.github.io/atibi-doct/" class="logo" title="الصفحة الرئيسية">
+                <img src="data/icon.png" alt="أيقونة التطبيق" onerror="this.style.display='none'">
+            </a>
+            
+            <div class="header-content">
+                <h1>طلب تسجيل طبيب</h1>
+            </div>
+            
+            <a href="https://asayss.github.io/atibi-doct/" class="home-button" title="الصفحة الرئيسية">🏠</a>
+        </div>
+        
+        <div class="form-container">
+            <div class="form-note">
+                <strong>مرحباً بكم في منصة أطبائي</strong><br>
+                يرجى ملء جميع البيانات المطلوبة بدقة. سيتم مراجعة طلبكم والرد عليكم في أقرب وقت ممكن.
+            </div>
+
+            <form id="doctorForm">
+                <div class="form-group">
+                    <label class="form-label" for="doctorName">
+                        اسم الطبيب <span class="required">*</span>
+                    </label>
+                    <input type="text" id="doctorName" name="doctorName" class="form-input" placeholder="الاسم الكامل للطبيب" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="specialty">
+                        التخصص <span class="required">*</span>
+                    </label>
+                    <input type="text" id="specialty" name="specialty" class="form-input" placeholder="مثال: طب الأطفال، جراحة عامة، طب النساء..." required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="address">
+                        العنوان الكامل <span class="required">*</span>
+                    </label>
+                    <textarea id="address" name="address" class="form-input form-textarea" placeholder="العنوان التفصيلي للعيادة أو المستشفى" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="phone">
+                        رقم الهاتف <span class="required">*</span>
+                    </label>
+                    <input type="tel" id="phone" name="phone" class="form-input" placeholder="مثال: 0612345678" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="whatsapp">
+                        رقم الواتساب <span class="required">*</span>
+                    </label>
+                    <input type="tel" id="whatsapp" name="whatsapp" class="form-input" placeholder="مثال: 0612345678" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="doctorCard">
+                        تحميل بطاقة الطبيب (اختياري)
+                    </label>
+                    <div class="file-input-container">
+                        <input type="file" id="doctorCard" name="doctorCard" class="file-input" accept="image/*,.pdf">
+                        <label for="doctorCard" class="file-input-label">
+                            📎 اضغط لاختيار الملف
+                        </label>
+                        <div class="file-name" id="fileName"></div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-button" id="submitBtn">
+                    إرسال الطلب عبر واتساب
+                </button>
+
+                <div class="loading" id="loading">
+                    جاري إرسال الطلب...
+                </div>
+
+                <div class="success-message" id="successMsg">
+                    تم إرسال طلبكم بنجاح! سيتم التواصل معكم قريباً.
+                </div>
+
+                <div class="error-message" id="errorMsg">
+                    حدث خطأ في الإرسال. يرجى المحاولة مرة أخرى.
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // رقم الواتساب الذي ستُرسل إليه الرسائل (يجب تعديل هذا الرقم)
+        const WHATSAPP_NUMBER = '212653146168'; // ضع رقم الواتساب هنا (مع رمز الدولة بدون +)
+        
+        // للتجربة: اتركه فارغ ليفتح واتساب بدون رقم محدد
+        // const WHATSAPP_NUMBER = '';
+
+        const form = document.getElementById('doctorForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const loading = document.getElementById('loading');
+        const successMsg = document.getElementById('successMsg');
+        const errorMsg = document.getElementById('errorMsg');
+        const fileInput = document.getElementById('doctorCard');
+        const fileName = document.getElementById('fileName');
+
+        // معالجة تحميل الملف
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                fileName.textContent = `تم اختيار: ${this.files[0].name}`;
+                fileName.style.color = '#4caf50';
+            } else {
+                fileName.textContent = '';
+            }
+        });
+
+        // معالجة إرسال النموذج
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // إخفاء الرسائل السابقة
+            successMsg.style.display = 'none';
+            errorMsg.style.display = 'none';
+            
+            // عرض حالة التحميل
+            loading.style.display = 'block';
+            submitBtn.disabled = true;
+            
+            // جمع البيانات من النموذج
+            const formData = {
+                doctorName: document.getElementById('doctorName').value.trim(),
+                specialty: document.getElementById('specialty').value.trim(),
+                address: document.getElementById('address').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                whatsapp: document.getElementById('whatsapp').value.trim()
+            };
+
+            // التحقق من البيانات المطلوبة
+            if (!formData.doctorName || !formData.specialty || !formData.address || 
+                !formData.phone || !formData.whatsapp) {
+                showError('يرجى ملء جميع الحقول المطلوبة');
+                return;
+            }
+
+            // إنشاء نص الرسالة
+            const message = createWhatsAppMessage(formData);
+            
+            // محاكاة التأخير لإظهار حالة التحميل
+            setTimeout(() => {
+                try {
+                    // إنشاء رابط واتساب
+                    let whatsappUrl;
+                    
+                    if (WHATSAPP_NUMBER && WHATSAPP_NUMBER.trim() !== '') {
+                        // إرسال لرقم محدد
+                        whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+                    } else {
+                        // فتح واتساب للاختيار من جهات الاتصال
+                        whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+                    }
+                    
+                    console.log('WhatsApp URL:', whatsappUrl); // للتصحيح
+                    
+                    // محاولة فتح واتساب
+                    const newWindow = window.open(whatsappUrl, '_blank');
+                    
+                    // التحقق من نجاح فتح النافذة
+                    if (newWindow) {
+                        showSuccess();
+                        form.reset();
+                        fileName.textContent = '';
+                    } else {
+                        // في حالة منع النوافذ المنبثقة، محاولة التوجيه المباشر
+                        window.location.href = whatsappUrl;
+                        showSuccess();
+                        form.reset();
+                        fileName.textContent = '';
+                    }
+                    
+                } catch (error) {
+                    console.error('خطأ في فتح واتساب:', error);
+                    showError('حدث خطأ في فتح واتساب. يرجى التأكد من تثبيت التطبيق أو المحاولة مرة أخرى.');
+                }
+            }, 1000);
+        });
+
+        function createWhatsAppMessage(data) {
+            let message = `🏥 *طلب تسجيل طبيب جديد*\n\n`;
+            message += `👨‍⚕️ *اسم الطبيب:* ${data.doctorName}\n`;
+            message += `🩺 *التخصص:* ${data.specialty}\n`;
+            message += `📍 *العنوان:* ${data.address}\n`;
+            message += `📞 *رقم الهاتف:* ${data.phone}\n`;
+            message += `📱 *رقم الواتساب:* ${data.whatsapp}\n\n`;
+            
+            if (fileInput.files && fileInput.files[0]) {
+                message += `📎 *تم إرفاق بطاقة الطبيب*\n\n`;
+            }
+            
+            message += `⏰ *تاريخ الطلب:* ${new Date().toLocaleDateString('ar-MA')}\n`;
+            message += `🌐 *المصدر:* موقع أطبائي`;
+            
+            return message;
+        }
+
+        function showSuccess() {
+            loading.style.display = 'none';
+            successMsg.style.display = 'block';
+            submitBtn.disabled = false;
+            
+            // إخفاء رسالة النجاح بعد 5 ثواني
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 5000);
+        }
+
+        function showError(message) {
+            loading.style.display = 'none';
+            errorMsg.textContent = message;
+            errorMsg.style.display = 'block';
+            submitBtn.disabled = false;
+            
+            // إخفاء رسالة الخطأ بعد 5 ثواني
+            setTimeout(() => {
+                errorMsg.style.display = 'none';
+            }, 5000);
+        }
+
+        // تحسين تجربة المستخدم على الهواتف
+        const inputs = document.querySelectorAll('.form-input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+
+        // التحقق من صحة أرقام الهاتف
+        const phoneInputs = document.querySelectorAll('input[type="tel"]');
+        phoneInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                // السماح بالأرقام والمسافات والرموز الشائعة فقط
+                this.value = this.value.replace(/[^\d\s\+\-\(\)]/g, '');
+            });
+        });
+    </script>
+</body>
+</html>
