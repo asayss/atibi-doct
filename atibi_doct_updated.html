@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>atibbi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1976d2, #2196f3);
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .home-button {
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            text-decoration: none;
+        }
+
+        .home-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .home-button:active {
+            transform: scale(0.95);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #1976d2, #2196f3);
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        .header-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1;
+            position: relative;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            margin-top: 15px;
+        }
+
+        .search-container {
+            padding: 25px;
+            background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 16px;
+            background: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #1e3c72;
+            box-shadow: 0 6px 20px rgba(30, 60, 114, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 20px;
+        }
+
+        .cities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+            margin-bottom: 25px;
+        }
+
+        .cities-grid::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .cities-grid::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .cities-grid::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            border-radius: 10px;
+        }
+
+        .city-button {
+            background: linear-gradient(135deg, white, #f8f9fa);
+            border: none;
+            border-radius: 15px;
+            padding: 20px 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .city-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .city-button:hover::before {
+            left: 100%;
+        }
+
+        .city-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(30, 60, 114, 0.2);
+            background: linear-gradient(135deg, #2196f3, #1976d2);
+            color: white;
+        }
+
+        .city-button:active {
+            transform: translateY(-2px);
+        }
+
+        .add-doctor-section {
+            padding: 0 25px 25px 25px;
+            background: linear-gradient(to bottom, #e9ecef, #f8f9fa);
+        }
+
+        .add-doctor-button {
+            width: 100%;
+            background: linear-gradient(135deg, #1976d2, #2196f3);
+            border: none;
+            border-radius: 20px;
+            padding: 18px 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(25, 118, 210, 0.3);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .add-doctor-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .add-doctor-button:hover::before {
+            left: 100%;
+        }
+
+        .add-doctor-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(25, 118, 210, 0.4);
+            background: linear-gradient(135deg, #1565c0, #1976d2);
+        }
+
+        .add-doctor-button:active {
+            transform: translateY(-1px);
+        }
+
+        .add-doctor-icon {
+            font-size: 20px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+        }
+
+        .no-results {
+            text-align: center;
+            color: #666;
+            font-size: 16px;
+            padding: 40px 20px;
+            display: none;
+        }
+
+        .no-results.show {
+            display: block;
+        }
+
+        @media (max-width: 480px) {
+            .cities-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .search-input {
+                font-size: 14px;
+            }
+
+            .add-doctor-button {
+                font-size: 15px;
+                padding: 16px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="https://asayss.github.io/atibi-doct/" class="logo" title="الصفحة الرئيسية">
+                <img src="data/icon.png" alt="أيقونة التطبيق" onerror="this.style.display='none'">
+            </a>
+            
+            <div class="header-content">
+                <h1>البحث عن اطباء حسب المدينة</h1>
+            </div>
+            
+            <a href="https://asayss.github.io/atibi-doct/" class="home-button" title="الصفحة الرئيسية">🏠</a>
+        </div>
+        
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="ابحث عن مدينة..." id="searchInput">
+                <span class="search-icon">🔍</span>
+            </div>
+            
+            <div class="cities-grid" id="citiesGrid">
+                <a href="https://asayss.github.io/casa-doct/" class="city-button" data-city="الدار البيضاء">الدار البيضاء</a>
+                <a href="https://asayss.github.io/rabat-doct/" class="city-button" data-city="الرباط">الرباط</a>
+                <a href="https://asayss.github.io/fes-doct/" class="city-button" data-city="فاس">فاس</a>
+                <a href="https://asayss.github.io/marakech-doct/" class="city-button" data-city="مراكش">مراكش</a>
+                <a href="https://asayss.github.io/agadir-doct/" class="city-button" data-city="أكادير">أكادير</a>
+                <a href="https://asayss.github.io/tanger-doct/" class="city-button" data-city="طنجة">طنجة</a>
+            </div>
+            
+            <div class="no-results" id="noResults">
+                <p>لم يتم العثور على أي مدينة تطابق البحث</p>
+            </div>
+        </div>
+
+        <div class="add-doctor-section">
+            <a href="data/talab.html" class="add-doctor-button" id="addDoctorBtn">
+                <span class="add-doctor-icon">👨‍⚕️</span>
+                طلب إضافة طبيب
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const citiesGrid = document.getElementById('citiesGrid');
+        const noResults = document.getElementById('noResults');
+        const cityButtons = citiesGrid.querySelectorAll('.city-button');
+
+        function filterCities() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            let visibleCount = 0;
+
+            cityButtons.forEach(button => {
+                const cityName = button.getAttribute('data-city').toLowerCase();
+                const isMatch = cityName.includes(searchTerm);
+                
+                if (isMatch) {
+                    button.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    button.style.display = 'none';
+                }
+            });
+
+            if (visibleCount === 0 && searchTerm !== '') {
+                noResults.classList.add('show');
+                citiesGrid.style.display = 'none';
+            } else {
+                noResults.classList.remove('show');
+                citiesGrid.style.display = 'grid';
+            }
+        }
+
+        searchInput.addEventListener('input', filterCities);
+        searchInput.addEventListener('keyup', filterCities);
+
+        // تأثيرات إضافية للأزرار
+        cityButtons.forEach(button => {
+            button.addEventListener('touchstart', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
+            
+            button.addEventListener('touchend', function() {
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 100);
+            });
+        });
+
+        // تأثيرات لزر إضافة طبيب
+        const addDoctorBtn = document.getElementById('addDoctorBtn');
+        addDoctorBtn.addEventListener('touchstart', function() {
+            this.style.transform = 'translateY(-1px)';
+        });
+        
+        addDoctorBtn.addEventListener('touchend', function() {
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 100);
+        });
+
+        // تحسين الأداء للهاتف
+        let searchTimeout;
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(filterCities, 150);
+        });
+    </script>
+</body>
+</html>
